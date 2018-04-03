@@ -2,28 +2,28 @@ package com.qs.entity;
 
 import java.io.Serializable;
 
-public class UserBean implements Serializable{
+public class User implements Serializable{
 
-    private Integer id;
+    private String id;
     private String username;
     private String password;
     private Double account;
 
-    public UserBean(){
+    public User(){
 
     }
 
-    public UserBean(String username, String password, Double account) {
+    public User(String username, String password, Double account) {
         this.username = username;
         this.password = password;
         this.account = account;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

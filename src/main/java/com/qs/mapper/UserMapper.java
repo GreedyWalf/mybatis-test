@@ -1,41 +1,68 @@
 package com.qs.mapper;
-import com.qs.entity.UserBean;
+
+import com.qs.entity.User;
 
 import java.util.List;
+
 public interface UserMapper {
     /**
      * 新增用戶
+     *
      * @param user
      * @return
      * @throws Exception
      */
-    public int insertUser(UserBean user) throws Exception;
+    int save(User user) throws Exception;
+
+    /**
+     * 批量更新
+     *
+     * @param userList
+     * @return
+     */
+    int batchSave(List<User> userList);
+
     /**
      * 修改用戶
+     *
      * @param user
-     * @param id
      * @return
      * @throws Exception
      */
-    public int updateUser (UserBean user,int id) throws Exception;
+    int updateUser(User user) throws Exception;
+
+    /**
+     * 批量更新对象
+     *
+     * @param users
+     * @return
+     */
+    int batchUpdate(List<User> users);
+
+
     /**
      * 刪除用戶
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public int deleteUser(int id) throws Exception;
+    int deleteUser(String id) throws Exception;
+
     /**
      * 根据id查询用户信息
+     *
      * @param id
      * @return
      * @throws Exception
      */
-    public UserBean selectUserById(int id) throws Exception;
+    User selectUserById(String id) throws Exception;
+
     /**
      * 查询所有的用户信息
+     *
      * @return
      * @throws Exception
      */
-    public List<UserBean> selectAllUser() throws Exception;
+    List<User> selectAllUser() throws Exception;
 }
