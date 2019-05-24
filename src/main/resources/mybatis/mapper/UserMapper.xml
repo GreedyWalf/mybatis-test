@@ -2,78 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qs.mapper.UserMapper">
     <!-- 自定义返回结果集 -->
-    <resultMap id="userMap" type="User">
-        <id property="id" column="id" javaType="java.lang.String"/>
-        <result property="username" column="username" javaType="java.lang.String"/>
-        <result property="password" column="password" javaType="java.lang.String"/>
-        <result property="account" column="account" javaType="java.lang.Double"/>
+    <resultMap id="BaseResultMap" type="User">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
     </resultMap>
 
-
-    <!--
-        下面定义的insert、update等，id需要和定义的UserMapper接口中的方法名一致
-        parameterType属性指定入参类型；
-
-     -->
-
-    <!-- 使用UUID作为主键，在insert时自动插入值 -->
-    <insert id="save" parameterType="com.qs.entity.User">
-        <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            select replace(uuid(),'-','') as id from dual
-        </selectKey>
-        insert into t_user (id,username,password,account) values (#{id},#{username},#{password},#{account});
-    </insert>
-
-    <!-- 批量插入 -->
-    <insert id="batchSave" parameterType="java.util.List">
-        INSERT into t_user (id,username,password,account)
-        VALUES
-        <foreach collection="list" item="userItem" index="index" separator=",">
-            ((SELECT REPLACE(UUID(), '-', '') AS id),#{userItem.username},#{userItem.password},#{userItem.account})
-        </foreach>
-    </insert>
-
-    <update id="updateUser" parameterType="com.qs.entity.User">
-        update t_user set username=#{username},password=#{password},account=#{account} where id=#{id}
-    </update>
-
-    <!-- 批量更新 -->
-    <update id="batchUpdate" parameterType="java.util.List">
-        UPDATE t_user set
-        username =
-        <foreach collection="list" item="userItem" index="index" separator=" " open="case id" close="end">
-            WHEN #{userItem.id} THEN #{userItem.username}
-        </foreach>
-        ,password =
-        <foreach collection="list" item="userItem" index="index" separator=" " open="case id" close="end">
-            WHEN #{userItem.id} THEN #{userItem.password}
-        </foreach>
-        ,account =
-        <foreach collection="list" item="userItem" index="index" separator=" " open="case id" close="end">
-            WHEN #{userItem.id} THEN #{userItem.account}
-        </foreach>
-        WHERE id IN
-        <foreach collection="list" item="userItem" index="index" separator="," open="(" close=")">
-            #{userItem.id}
-        </foreach>
-    </update>
-
-    <delete id="deleteUser" parameterType="String">
-        delete from t_user where id=#{id}
-    </delete>
-
-
-    <!-- 注意这里的resultMap和resultType的区别，resultMap对应上面resultMap标签中定义的包含pojo中的属性，
-    将定义的这些属性封装在结果集中 -->
-    <!--<select id="selectUserById" parameterType="java.lang.String" resultType="com.qs.entity.User">
-        select * from t_user where id=#{id}
-    </select>-->
-
-    <select id="selectUserById" parameterType="String" resultMap="userMap">
-        select id,username from t_user where id=#{id}
-    </select>
-
-    <select id="selectAllUser" resultMap="userMap">
-        select * from t_user
+    <select id="getUserById" resultMap="BaseResultMap">
+        select * from t_user where user_id=#{userId}
     </select>
 </mapper>
